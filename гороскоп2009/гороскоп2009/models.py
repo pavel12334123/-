@@ -29,3 +29,9 @@ class Predection(models.Model):
     sign = models.ForeignKey(Sign, on_delete=models.CASCADE)
     date = models.DateField()
 
+
+class Product(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20,
+                            null=False,
+                            unique=True)
