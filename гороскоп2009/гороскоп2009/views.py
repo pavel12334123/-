@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Sign
 from .forms import ProductName
-from .models import Product
+from .models import Product, Predection
 
 
 def homepage(request):
@@ -39,10 +39,10 @@ def product_new(request):
         return render(request, "addProduct.html", {'form': form})
 
 
-def predict(req, sign_name):
+def predict(req, sign):
     predict_list=[]
-    for predict in Predict.objects.all():
-        if predict.Sign.name == sign_name:
+    for predict in Predection.objects.all():
+        if predict.Sign.id == sign:
             predict_list.append(predict)
-    return render(req, "", {})
+    return render(req, "prediction.html", {})
 
