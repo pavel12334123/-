@@ -5,18 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-<h1>сегодня в 19:05 диму собьёт камаз 1999 года</h1>
     <ul class="list-group">
-        {% for id, name in products %}
+        {% for p in pre %}
         <li class="list-group-item d-flex justify-content-between">
-            <span><b>{{ id }}</b>. Имя {{ name }}</span>
+            <span><b>{{ p.id }}</b>. Знак {{ p.sign.name }} {{ p.sign.id }}</span>
             <div class="btn-group" role="group" aria-label="Basic example">
               <a href="/product/edit/{{ id }}" class="btn btn-primary">Изменить</a>
               <a href="/product/delete/{{ id }}" class="btn btn-danger">Удалить</a>
                 <a href="/product/delete_submit/{{ id }}" class="btn btn-danger">Удалить1</a>
 
             </div>
-
         </li>
 
         {% endfor %}

@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.index),
     path('about/', views.index),
-    path('sign/<name>/<to>/<end>', views.Sign),
-    path('signs', views.Sign),
+    path('sign/<name>/<to>/<end>', views.sign),
+    path('signs', views.sign),
     path('predict/<sign>', views.predict)
 ]
