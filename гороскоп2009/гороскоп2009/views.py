@@ -60,14 +60,14 @@ def add_product(request):
             form = ProductName(request.POST)
             if form.is_valid():
                 name = form['product_name'].value()
-                product = Product(name=name)
-                product.save()
+                predection = Predection(text=name)
+                predection.save()
                 return redirect("/")
         except Exception as e:
             form = ProductName(request.POST)
             return render(request, "addProduct.html", {
                 'form': form,
-                'error_message': "такое имя занято"
+                'error_message': e
             })
     else:
         form = ProductName()
