@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Sign
 from .forms import ProductName
 from .models import Product, Predection, Sign
@@ -54,3 +54,21 @@ def predict(req, sign):
             out.append(pre)
     return render(req, "prediction.html", {'pre':out})
 
+def add_product(request):
+    if request.method == "POST":
+        try:
+            form = ProductName(request.POST)
+            if form.is_valid():
+                name = form['product_name'].value()
+                product = Product(name=name)
+                product.save()
+                return redirect("/")
+        except Exception as e:
+            form = ProductName(request.POST)
+            return render(request, "addProduct.html", {
+                'form': form,
+                'error_message': "такое имя занято"
+            })
+    else:
+        form = ProductName()
+        return render(request, "addProduct.html", {'form': form})
