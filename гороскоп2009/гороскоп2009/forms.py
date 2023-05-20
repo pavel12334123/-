@@ -1,5 +1,8 @@
 from django import forms
+from .models import Sign
 
 
-class ProductName(forms.Form):
-    product_name = forms.CharField(label="Product name", max_length=20)
+class PredictName(forms.Form):
+    predict_name = forms.CharField(label="Создай гороскоп", max_length=200)
+    sign = forms.ModelChoiceField(widget=forms.Select,
+                                      queryset=Sign.objects.all())

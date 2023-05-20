@@ -1,8 +1,10 @@
+import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Sign
-from .forms import ProductName
-from .models import Product, Predection, Sign
+from .forms import PredictName
+from .models import Predict, Predection, Sign
 
 
 def homepage(request):
@@ -22,53 +24,33 @@ def sign(request, name, to, end):
         return HttpResponse(f"<h1><b>{k}</b></h1>")
 
 
-def product_new(request):
+def predict(req, param_sign: int):
+    predict_list=[]
+    for PREDICT in Predection.objects.all():
+        if PREDICT.sign.id == int(param_sign):
+            predict_list.append(PREDICT)
+
+    return render(req, "prediction.html", {'pre':predict_list})
+
+
+
+def add_predict(request):
     if request.method == "POST":
         try:
-            if request.method == "POST":
-                form = ProductName(request.POST)
-                if form.is_valid():
-                    name = form['product_name'].value()
-                    product = Product(name=name)
-                    product.save()
-                    return HttpResponse(f"<h3>id: {product.id} name: {product.name}</h3>")
-        except Exception as e:
-            return HttpResponse(f"<h1><b>يباسينبتاسنيتبتسبتيستمتسيتنبمتنبنمنتشبلتنيسبتمن</b>{e}</h1>")
-    else:
-        form = ProductName()
-        return render(request, "addProduct.html", {'form': form})
-
-
-def predict(req, sign):
-    # predict_list=[]
-    # for predict in Predection.objects.all():
-    #     if predict.Sign.id == sign:
-    #         predict_list.append(predict)
-    signs = Sign.objects.all()
-    predict_list = [
-        Predection(sign=_sign, text="ABOBA") for _sign in signs
-    ]
-    out = []
-    for pre in predict_list:
-        if pre.sign.id == int(sign):
-            out.append(pre)
-    return render(req, "prediction.html", {'pre':out})
-
-def add_product(request):
-    if request.method == "POST":
-        try:
-            form = ProductName(request.POST)
+            form = PredictName(request.POST)
             if form.is_valid():
-                name = form['product_name'].value()
-                predection = Predection(text=name)
+                sign_id = form["sign"].value()
+                name = form['predict_name'].value()
+                predection = Predection(text=name, sign=Sign.objects.get(id=sign_id))
+                predection.date = datetime.date.today()
                 predection.save()
                 return redirect("/")
         except Exception as e:
-            form = ProductName(request.POST)
+            form = PredictName(request.POST)
             return render(request, "addProduct.html", {
                 'form': form,
                 'error_message': e
             })
     else:
-        form = ProductName()
+        form = PredictName()
         return render(request, "addProduct.html", {'form': form})
